@@ -1,0 +1,10 @@
+{
+  "destination": "e-cidade/e-cidade-DBSeller",
+  "managed_by": "e-cidade/.github",
+  "mirror": "dbseller",
+  "schema": 1,
+  "source": "DBSeller/e-cidade",
+  "upstream_default_branch": "master",
+  "upstream_default_sha": "e640eb485bf9a29f1fcda9c289c4ab23cffefe1d",
+  "upstream_fingerprint": "29bf2bddc848ca24181b625798073b9fa15e9ae45a2ddb8ba4032f7310f4f715"
+}

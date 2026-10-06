@@ -1,3 +1,19 @@
+<!-- ecidade-mirror:begin -->
+
+> [!IMPORTANT]
+> Este repositório é um **mirror** de [`DBSeller/e-cidade`](https://github.com/DBSeller/e-cidade),
+> mantido por **DBSeller**.
+>
+> A organização e-Cidade sincroniza este repositório para facilitar a descoberta
+> das diferentes linhas de desenvolvimento do projeto. A presença deste mirror
+> não transfere a autoria ou a manutenção do código para a organização e-Cidade
+> e não indica que esta distribuição seja oficial ou preferencial.
+>
+> Para alterações no código proveniente do upstream, contribua diretamente em
+> [`DBSeller/e-cidade`](https://github.com/DBSeller/e-cidade).
+
+<!-- ecidade-mirror:end -->
+
 # 🏙️ e-Cidade
 
 O **e-Cidade** é um sistema integrado desenvolvido para a gestão municipal. Ele atende as áreas financeira, patrimonial, tributária, de recursos humanos, de educação e de saúde. A ferramenta é destinada ao uso diário por servidores públicos do município e também pelos cidadãos. Seu principal objetivo é automatizar, agilizar e simplificar os processos da administração pública, promovendo uma gestão mais transparente, eficiente e que melhore o atendimento à população.
